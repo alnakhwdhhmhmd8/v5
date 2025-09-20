@@ -1,0 +1,56 @@
+from pyrogram import Client, idle
+from pyromod import listen
+import os
+from asyncio import sleep
+from asBASE import asJSON
+
+db = asJSON("as.json")
+
+TOKEN = "8285029148:AAFxRED5GWUgoEXc5Ga4y5eMwuPgu-Dcoiw"
+
+SUDORS = [7728230165, 7728230165]
+DEVELOPERS = ["wwvvwl","wwvvwl"]
+
+bot = Client(
+    "BotVERON",
+    api_id=20551716,
+    api_hash="564355da021dc5739c01f33fb015eaf1",
+    bot_token=TOKEN,
+    plugins=dict(root="BotMeKer"),
+    in_memory=True  
+)
+
+async def start_bot():
+    print("[INFO]: Starting bot...")
+    await bot.start()
+    print("[INFO]: Bot started successfully")
+    
+    for dev_id in DEVELOPERS:
+        try:
+            msg = await bot.send_message(dev_id, "⚡️")
+            await sleep(5)
+            await msg.delete()
+            await bot.send_message(dev_id, "تم تشغيل البوت بنجاح")
+        except Exception as e:
+            print(f"[ERROR]: Failed to send message to developer {dev_id}: {e}")
+    
+    await idle()
+    await bot.stop()
+
+if __name__ == "__main__":
+    import asyncio
+    session_file = "BotVERON.session"
+    if os.path.exists(session_file):
+        os.remove(session_file)
+        print(f"[INFO]: Removed old session file: {session_file}")
+    
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(start_bot())
+    except KeyboardInterrupt:
+        print("\n[INFO]: Stopping bot...")
+    finally:
+        loop.close()
+
+
+bot_id = TOKEN.split(":")[0]
